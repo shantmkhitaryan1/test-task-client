@@ -8,7 +8,7 @@ export default function HideOnScroll({ children }) {
 
   return (
     <VisibilitySensor onChange={onChange}>
-      <Fade in={active} timeout={2500}>
+      <Fade in={active} timeout={1000}>
         {children}
       </Fade>
     </VisibilitySensor>

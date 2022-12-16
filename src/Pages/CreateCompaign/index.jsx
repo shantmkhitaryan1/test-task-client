@@ -27,7 +27,7 @@ export default function CreateCompaign() {
     if (Object.values(state).some(item => !item.trim()) || state.expiresIn === 'Invalid Date')
       return
     dispatch(createCompaign({ ...state }))
-    .then(res => !res.error.message && navigateHome())
+    .then(res => !res.error && navigateHome())
   }
 
   const handleDate = value =>
