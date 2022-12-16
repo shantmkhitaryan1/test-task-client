@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { setAuthInfo } from 'Helpers'
-import axios from '../Axios'
+import { setAuthInfo } from 'Utils/helpers'
+import axios from './axios'
 
 export const signIn = createAsyncThunk(
   'sign-in',
   async ({ username, password, navigateToCreate }, { rejectWithValue }) => {
     try {
-      const { data: { data } } = await axios.post(process.env.REACT_APP_API_URL + '/auth/sign-in', {
+      const {
+        data: { data },
+      } = await axios.post(process.env.REACT_APP_API_URL + '/auth/sign-in', {
         username,
         password,
-      });
-      navigateToCreate();
-      return data;
+      })
+      navigateToCreate()
+      return data
     } catch (err) {
       return rejectWithValue(err.message)
     }
@@ -26,9 +28,9 @@ const authSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(signIn.fulfilled, (state, { payload: { username, password, token } }) => {
-      state.username = username;
-      state.password = password;
-      setAuthInfo(token);
+      state.username = username
+      state.password = password
+      setAuthInfo(token)
     })
   },
 })

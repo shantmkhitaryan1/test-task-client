@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import store from 'Redux/store'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import store from 'Redux/store'
-import ThemeProvider from './ThemeProvider'
-import App from './App'
-import SignIn from 'SignIn'
-import CreateCompaign from 'CreateCompaign'
+import ThemeProvider from './Components/ThemeProvider'
+import App from './Pages/App'
+import SignIn from 'Pages/SignIn'
+import CreateCompaign from 'Pages/CreateCompaign'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -14,9 +14,9 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route exact path='/' element={<App />} />
-          <Route exact path='/sign-in' element={<SignIn />} />
-          <Route exact path='/create' element={<CreateCompaign />} />
+          <Route exact path="/" element={<App />} />
+          <Route exact path="/sign-in" element={<SignIn />} />
+          <Route exact path="/create" element={<CreateCompaign />} />
         </Routes>
       </BrowserRouter>
     </Provider>
