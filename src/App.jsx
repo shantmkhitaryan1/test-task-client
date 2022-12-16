@@ -11,11 +11,13 @@ import './App.css'
 export default function App() {
   const [donateModalOpen, setDonateModalOpen] = useState(false);
   const [filteredCompaign, setFilteredCompaign] = useState(false);
+  const [donatorBalance, setDonatorBalance] = useState(0);
+	const [errorMessage, setErrorMessage] = useState('');
   const initialDonatorState = useMemo(() => ({
     goalAmount: 0,
     donatorName: '',
     address: '',
-  }), [])
+  }), []);
   const [donatorState, setDonatorState] = useState(initialDonatorState);
   const { compaigns, loading }  = useSelector(state => state.compaign)
   const { navigateHome } = useRedirect();
@@ -29,6 +31,12 @@ export default function App() {
   const modalCloseHandler = (item) => {
     setDonateModalOpen(false)
     setDonatorState(initialDonatorState)
+    setErrorMessage('');
+    setDonatorBalance(0)
+  }
+
+  const handleDonatorBalance = (value) => {
+    setDonatorBalance(value)
   }
 
   const handleChangeDonatorData = (evt, type, value) => {
@@ -42,12 +50,28 @@ export default function App() {
   }
 
   const handleSubmitDonatorData = () => {
-      if (donatorState.goalAmount===0 
-          || !donatorState.donatorName.trim()
-          || (!donatorState.address)) return;
+    if (!(+donatorState.goalAmount)) {
+      setErrorMessage('Goal is invalid');
+      return;
+    }
+    else if (!donatorState.donatorName.trim()) {
+      setErrorMessage('Enter your name, please');
+      return;
+    }
+    else if (!donatorState.address) {
+      setErrorMessage('Connect your metamask address, please');
+      return;
+    }
+    else if (donatorBalance<donatorState.goalAmount) {
+      setErrorMessage('Balance error');
+      return;
+    }
+    else {
+      setErrorMessage('');
       dispatch(donateCompaign({ ...donatorState, compaignId: filteredCompaign.id, navigateHome }))
         .then(modalCloseHandler)
         .catch(modalCloseHandler)
+    }
   }
 
   useEffect(() => {
@@ -172,7 +196,10 @@ export default function App() {
                   </Button>
                 </Box>
                 <Divider />
-                <WalletCard donatorAddressChangeHandler={(value) => handleChangeDonatorData(null, 'address', value)} />
+                <WalletCard 
+                  errMessage={errorMessage}
+                  donatorAddressChangeHandler={(value) => handleChangeDonatorData(null, 'address', value)}
+                  handleDonatorBalance={handleDonatorBalance} />
               </Box>
             </Fade>
           </Modal>

@@ -32,10 +32,20 @@ export const donateCompaign = createAsyncThunk('donate/compaign', async ({ donat
     }
 })
 
+const sampleData = {
+    id: Math.random(),
+    name: 'sample',
+    description: 'sample description',
+    goalAmount: 10000,
+    expiresIn: new Date(Date.now()).toLocaleTimeString(),
+    status: 'active'
+};
+
 const compaignSlice = createSlice({
     name: 'compaign',
     initialState: {
-        compaigns: [],
+        compaigns: [sampleData],
+        // compaigns: [],
         loading: false,
     },
     extraReducers: (builder => {
